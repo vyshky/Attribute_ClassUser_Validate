@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 
 namespace AttributeUser
@@ -16,15 +16,14 @@ namespace AttributeUser
             // User testClass = new User("", 18); // пример получения типа
             // Type type = testClass.GetType();   // пример получения типа
             Type typeUser = typeof(User);//Получаем тип User
-            Attribute[] methodInfo = Attribute.GetCustomAttributes(typeUser); // вызывает класс Attribute и получаем атрибуты; тоже самое только вызавает MethodInfo typeUser.GetCustomAttributes(false) false - не искать атрибуты базовых классов 
+            //Attribute[] methodInfo = Attribute.GetCustomAttributes(typeUser); // вызывает класс Attribute и получаем атрибуты; тоже самое только вызавает MethodInfo typeUser.GetCustomAttributes(false) false - не искать атрибуты базовых классов 
+            AgeValidationAttribute[] methodInfo =
+                (AgeValidationAttribute[])Attribute.GetCustomAttributes(typeof(AgeValidationAttribute)); // вызывает класс Attribute и получаем атрибуты; тоже самое только вызавает MethodInfo typeUser.GetCustomAttributes(false) false - не искать атрибуты базовых классов 
 
-            foreach (Attribute attr in methodInfo) // methodInfo хранит атрибуты
+            foreach (AgeValidationAttribute attr in methodInfo) // methodInfo хранит атрибуты
             {
                 // attr.GetType() == typeof(AgeValidationAttribute) проверяем тип атрибута , если атрибут не совпадает то пропускаем условие
-                if (attr.GetType() == typeof(AgeValidationAttribute) && ((AgeValidationAttribute)attr).GetAge() <= user.Age)
-                {
-                    return true;
-                }
+                return attr.GetAge() <= user.Age;
             }
             return false;
         }
